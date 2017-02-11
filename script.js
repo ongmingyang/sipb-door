@@ -8,7 +8,7 @@
 // Angular module
 var heatApp = angular.module('heatApp', []);
 
-// Angular Controller 
+// Angular Controller
 function visualControl($scope, $filter, $http) {
 
   /*
@@ -20,7 +20,7 @@ function visualControl($scope, $filter, $http) {
   var daySeconds = 24 * hourSeconds;
   var weekSeconds = 7 * daySeconds;
 
-  // Contains references to svg rectangles representing the timetable 
+  // Contains references to svg rectangles representing the timetable
   var heats = [[],[],[],[],[],[],[]];
 
   // Semantic map of day index -> day name
@@ -92,7 +92,7 @@ function visualControl($scope, $filter, $http) {
             method  : 'POST',
             url     : './data.cgi',
             data    : r,
-            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
           .success(function(data) {
             resetHeats();
@@ -178,7 +178,7 @@ function visualControl($scope, $filter, $http) {
     for (hour in dayFreq) {
       if (hour == 24) continue;
       y = hour * 20;
-      
+
       node = svgContainer.append("g")
           .attr("transform", "translate("+(50+x)+","+(50+y)+")");
 
@@ -241,6 +241,17 @@ function visualControl($scope, $filter, $http) {
 
     for (j = 0; j < data.intervals.length; ++j) {
       tuple = data.intervals[j];
+
+      // Process longer than a week opens
+      numWeeks = Math.floor((tuple[1] - tuple[0]) / weekSeconds);
+      for (i = 0; i < 7; ++i) {
+        day = freq[dayMap[i]];
+        for (k = 0; k < 24; ++k) {
+          day[k] += numWeeks;
+        }
+      }
+      tuple[0] += numWeeks * weekSeconds;
+
       daysPassed = tuple.map(function(t) {
         return Math.floor(t / daySeconds);
       });
@@ -249,10 +260,9 @@ function visualControl($scope, $filter, $http) {
       dayOpened = daysPassed[0] % 7;
       dayClosed = daysPassed[1] % 7;
 
+      //ASSUMPTION: door will not be open for longer than a week
       if (daysPassed[0] === daysPassed[1]) {
         updateHours(freq[dayMap[dayOpened]], residueOpened, residueClosed);
-
-      // ASSUMPTION: door will not be open for longer than a week
       } else {
         for (i = dayOpened; i != (dayClosed + 1) % 7; i = ++i % 7) {
           day = freq[dayMap[i]];
@@ -266,7 +276,7 @@ function visualControl($scope, $filter, $http) {
             default:
               updateHours(day, 0, daySeconds);
           }
-        } 
+        }
       }
     }
 
@@ -278,7 +288,7 @@ function visualControl($scope, $filter, $http) {
         frac = dayFreq[hour] / occurrence;
         hue = 24 * frac;
         lightness = (1 - frac) * 100;
-        
+
         heats[i][hour].select("rect").transition().style("fill", "hsl(" + hue + ", 50%," + lightness + "%)").duration(1000).delay( i * 60 + Number(hour) * 5);
         heats[i][hour].select("text").text(Math.round(frac*100) + '%');
       }

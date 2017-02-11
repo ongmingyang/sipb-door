@@ -1,0 +1,13 @@
+# Logfile for the SIPB door sensor
+# <sipb-door@mit.edu>
+# Format:
+# new state, current time, human-readable new state, human-readable time, time spent in previous state
+0,1342806733,closed,Fri Jul 20 13:52:13 2012,2 minutes and 12 seconds
+1,1342827902,open,Fri Jul 20 19:45:02 2012,5 hours and 53 minutes
+0,1342828021,closed,Fri Jul 20 19:47:01 2012,1 minute and 59 seconds
+1,1342832701,open,Fri Jul 20 21:05:01 2012,1 hour and 18 minutes
+0,1342845422,closed,Sat Jul 21 00:37:02 2012,3 hours and 32 minutes
+1,1342917601,open,Sat Jul 21 20:40:01 2012,20 hours and 3 minutes
+0,1430370886,closed,Wed Apr 29 21:41:28 2015,almost 3 years
+1,1430370887,open,Wed Apr 29 21:41:29 2015,1 second
+0,1430370888,closed,Wed Apr 29 21:41:30 2015,1 second

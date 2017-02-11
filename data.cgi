@@ -11,6 +11,7 @@ DEFAULT_WEEKS = 8
 params = sys.stdin.read()
 
 f = open('/afs/sipb/project/door/log','r')
+#f = open('tests/test-log', 'r')
 
 # remove, add if not params, default params above
 if params:
@@ -36,12 +37,12 @@ doorLogs = selectedDoorLogs[:]
 if doorLogs[-1][0]=='1':
   doorLogs.append(['0',time.time()])
 
-# Get the number of seconds since the most recent 
+# Get the number of seconds since the most recent
 # week start (midnight between Sat. and Sun.)
 def seconds_since_week_start(time):
   return int(time - UNIX_WEEK_DEVIATION - UTC_DEVIATION) % SEC_IN_WEEK
 
-# Given a list of tuples of open and close times, 
+# Given a list of tuples of open and close times,
 # return list of tuples of times since first week start
 def map_relative_times(list_of_tuples):
   first_time = list_of_tuples[0][0]
